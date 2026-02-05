@@ -10,17 +10,7 @@
 
 ---
 
-> **Note:** This repo is kept for historical reference. The plugin version with improved architecture is available at [brysontang/plugin-marketplace](https://github.com/brysontang/plugin-marketplace).
->
-> Install the plugin version:
-> ```
-> /plugin marketplace add brysontang/plugin-marketplace
-> /plugin install domino@brysontang-plugins
-> ```
-
----
-
-## Legacy Setup (CLAUDE.md approach)
+## Setup
 
 Open Claude Code in your project and paste:
 
