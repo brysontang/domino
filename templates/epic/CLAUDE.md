@@ -71,15 +71,29 @@ Go back to step 1. Pick next story from backlog.
 
 ## Parallel Execution
 
-Check dependency graph in `epic.md`. Independent stories can run in parallel:
+**Use subagents aggressively. Do not do everything yourself.**
+
+Subagents are cheaper (Sonnet vs Opus) and run in parallel. Spawn 3-4 at a time.
+
+Check dependency graph in `epic.md`. Independent stories run in parallel:
 
 ```
 # Stories 01, 02, 03 have no dependencies
-# Spawn 3 subagents, one per story
-# Each subagent runs TDD, moves to in-review
+# Spawn 3 subagents simultaneously, one per story
+# Each subagent: claim story → TDD → move to in-review
 # Wait for all to complete
-# Then spawn next wave
+# Spawn next wave (04, 05)
+# Repeat until all stories in in-review
 ```
+
+**You are the orchestrator, not the implementer.** Your job is to:
+1. Read the epic and dependency graph
+2. Spawn subagents for independent stories
+3. Wait for them to complete
+4. Spawn the next wave
+5. Run Codex when all stories are in in-review
+
+Do NOT implement stories yourself unless there's only one story left.
 
 ## Epic Review (Codex)
 
