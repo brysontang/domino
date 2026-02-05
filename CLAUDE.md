@@ -52,7 +52,7 @@ When entering an active epic, check the dependency graph in `epic.md`. Stories w
 ```
 
 ## Rules
-- **Never move or copy CLAUDE.md files** — move stories by name, not by glob
+- **When moving stories, never move CLAUDE.md** — move stories by name, not by glob
 - Never modify stories in `done/` epics
 - Never start work on an epic that isn't in `active/`
 - **If something is ambiguous, stop and escalate. Do not assume.**
