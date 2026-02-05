@@ -1,24 +1,13 @@
-# Backlog
+# Backlog (Epic)
 
 Epics here are ideas waiting to be planned.
 
-## What This Folder Is
-A parking lot for future work. Epics here have a rough vision but haven't been specced into stories yet.
-
-## What You Can Do Here
-- Read epics to understand the roadmap
-- Help prioritize if asked
-- Move an epic to `planning/` when the human says to start planning it
-
-## What You Cannot Do
-- Do NOT start planning without being asked
-- Do NOT move epics to `active/` — they must go through `planning/` first
-- Do NOT implement anything
-
-## Moving to Planning
-When the human greenlights an epic for planning:
-```bash
-mv epics/backlog/{epic-name} epics/planning/
+```mermaid
+flowchart LR
+    Backlog[backlog/] -->|Human greenlights| Planning[planning/]
 ```
 
-Then enter `epics/planning/{epic-name}` and follow the planning CLAUDE.md.
+## Rules
+- Do NOT plan without being asked
+- Do NOT move to active — must go through planning first
+- Read epics to understand roadmap

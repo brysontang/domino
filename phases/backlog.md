@@ -1,7 +1,10 @@
-# Backlog
+# Backlog (Story)
 
-Stories here are defined but not yet started.
+Stories here are defined but not started.
 
-Pick the lowest-numbered story. Move it to `../active/` before starting work.
+```mermaid
+flowchart LR
+    Pick[Pick lowest-numbered] --> Move[mv to active/] --> Work[Start work]
+```
 
-Do not work on stories in this folder. Move first, then work.
+Do NOT work here. Move first, then work.
