@@ -1,6 +1,6 @@
 # Epic Workspace
 
-You are inside an epic. Read `epic.md` first — it contains:
+You are the **orchestrator**. Read `epic.md` first — it contains:
 - Vision: what this epic achieves
 - Decisions: architectural choices (each should be testable)
 - Dependency graph: which stories can run in parallel
@@ -17,57 +17,22 @@ All work happens on this branch. Codex reviews the full branch diff against main
 
 ## The Loop
 
-**This is a loop. Codex is the gatekeeper. You do not exit until Codex is happy.**
-
 ```mermaid
 flowchart TD
-    A[Pick story from backlog] --> B[TDD: Write tests first]
-    B --> C[Implement until tests pass]
-    C --> D[Move story to in-review]
-    D --> E{More stories?}
-    E -->|Yes| A
-    E -->|No| F[Run Codex on full epic]
-    F --> G{Codex happy?}
-    G -->|No - logic bug| H[Spawn subagent to fix]
-    G -->|No - functionality issue| I[Create story, clarify with user]
-    H --> F
-    I --> A
-    G -->|Yes| J[Human review]
-    J --> K[Move epic to done]
+    A[Spawn subagents for independent stories] --> B[Wait for all to reach in-review]
+    B --> C{More stories in backlog?}
+    C -->|Yes| A
+    C -->|No| D[Run Codex on full epic]
+    D --> E{Codex happy?}
+    E -->|No - logic bug| F[Spawn subagent to fix]
+    E -->|No - functionality| G[Create story, clarify with user]
+    F --> D
+    G --> A
+    E -->|Yes| H[Human review]
+    H --> I[Move epic to done]
 ```
 
-Codex reviews the **full epic at once** (not per-story). This is intentional — Codex takes time, so batch the review. While Codex runs, you wait. This is the holding pattern.
-
-## TDD is Non-Negotiable
-
-Every story follows TDD:
-1. **Red** — Write tests that encode acceptance criteria. Run them. They fail.
-2. **Green** — Write code until tests pass. Nothing more.
-3. **Refactor** — Clean up while tests stay green.
-
-No implementation without failing tests first. Tests ARE the spec.
-
-## Story Flow
-
-### 1. Claim a Story
-```bash
-mv backlog/01-story.md active/
-```
-Update frontmatter: `agent: your-id`, `agent_status: implementing`
-
-### 2. TDD
-- Write tests for acceptance criteria
-- Implement until green
-- Run linter, fix issues
-
-### 3. Story Done
-When tests pass and lint is clean:
-```bash
-mv active/01-story.md in-review/
-```
-
-### 4. Next Story
-Go back to step 1. Pick next story from backlog.
+**This is a loop. Codex is the gatekeeper. You do not exit until Codex is happy.**
 
 ## Parallel Execution
 
@@ -91,43 +56,14 @@ Check dependency graph in `epic.md`. Independent stories run in parallel:
 2. Spawn subagents for independent stories
 3. Wait for them to complete
 4. Spawn the next wave
-5. Run Codex when all stories are in in-review
+5. When all stories are in `in-review/`, the Codex gate kicks in (see `in-review/CLAUDE.md`)
 
 Do NOT implement stories yourself unless there's only one story left.
 
-## Epic Review (Codex)
+## Subfolder Instructions
 
-When all stories are in `in-review/`:
-
-1. **Run Codex on full epic** (`codex review` against main branch)
-2. **Wait** — Codex takes time. This is the holding pattern. Don't burn tokens.
-3. **Handle Codex feedback:**
-
-### Logic Bug (quick fix)
-Typo, null check, off-by-one, lint issue, simple oversight.
-→ Spawn a subagent to fix immediately
-→ Run Codex again
-
-### Functionality Issue (needs clarification)
-Missing feature, wrong behavior, misaligned with requirements, architectural concern.
-→ Create a new story in `backlog/`
-→ Clarify with user if ambiguous
-→ Run story through the loop
-→ Run Codex again
-
-4. **Loop until Codex is happy**
-5. **Human reviews** all stories in `in-review/`
-6. **Human moves epic to `done/`**
-
-**Do not skip Codex. Do not exit early. The loop continues until Codex approves.**
-
-## Escalation
-
-If a story doesn't answer something you need: **STOP.**
-
-1. Write question under `## Blocked`
-2. Update `agent_status: blocked`
-3. Report to user
-4. Do NOT assume. Do NOT proceed.
-
-Assuming is how agents drift.
+Each phase has its own `CLAUDE.md` with detailed instructions:
+- `backlog/` — How to claim stories
+- `active/` — TDD process, blocked handling
+- `in-review/` — Codex gate, the review loop
+- `completed/` — Reference only

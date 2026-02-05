@@ -18,10 +18,10 @@ Stories here are being implemented. Each story should have an agent assigned.
 ### Phase 2: Implementation
 1. Write code until all tests pass (green phase)
 2. Run full test suite + linter
-3. Refactor if needed
-4. Run automated review (Codex if available, otherwise spawn a review subagent)
-5. Fix any issues
-6. Move story to `../in-review/`
+3. Refactor if needed (keep tests green)
+4. Move story to `../in-review/`
+
+Note: Codex runs at the epic level once ALL stories are in `in-review/`. See `../in-review/CLAUDE.md`.
 
 ## Rules
 - Tests come FIRST. No implementation without failing tests.

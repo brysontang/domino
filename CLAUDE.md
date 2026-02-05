@@ -51,10 +51,19 @@ When entering an active epic, check the dependency graph in `epic.md`. Stories w
 # Then spawn subagents for the next dependency group
 ```
 
+## Autonomy
+
+**Never ask permission to continue.** Move to the next task, next story, next wave. Just go.
+
+**Escalate tradeoffs, not code.** When you hit a decision point with real tradeoffs:
+- Don't ask "should I use approach A or B?"
+- Do explain: "A is faster but harder to test. B is cleaner but adds a dependency."
+- Let the user decide based on tradeoffs, not implementation details.
+
 ## Rules
 - **When moving stories, never move CLAUDE.md** — move stories by name, not by glob
 - Never modify stories in `done/` epics
 - Never start work on an epic that isn't in `active/`
 - **If something is ambiguous, stop and escalate. Do not assume.**
 
-The escalation rule is critical. The difference between "mostly achieved" and "fully achieved" is crystallized requirements. If a story doesn't answer a question you need to implement, STOP. Write the question under `## Blocked`. Report it. Wait for clarification. Assuming is how agents drift.
+Assuming is how agents drift. If a story doesn't answer a question you need, STOP. Write the question under `## Blocked`. Report it. Wait for clarification.

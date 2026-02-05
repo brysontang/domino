@@ -1,47 +1,57 @@
 # In Review
 
-Stories here have passing tests and have been through automated review.
+Stories here have passing tests and are awaiting review.
 
-These are waiting for human review. Do not modify unless asked.
-
-If the human requests changes, make them and keep the story here until approved.
-
-When approved, move to `../completed/`.
+Do not modify stories here unless fixing issues from Codex.
 
 ---
 
-## Epic Completion
+## The Codex Gate
 
-When ALL stories are in `in-review/` or `completed/`, the epic enters the **review loop**:
+**When ALL stories in the epic are in `in-review/`, run Codex.**
 
-### Review Loop
+This is the gate. The epic does not proceed until Codex is happy.
 
-1. **Run automated review** (Codex if available, otherwise spawn a review subagent):
-   ```bash
-   git diff main --stat  # See scope of changes
-   ```
+### Run Codex
 
-2. **For each issue found:**
-   - If ambiguous → ask human for clarification
-   - If clear → create a new fix story in `backlog/`
+```bash
+codex review  # Reviews full branch diff against main
+```
 
-3. **Run fix stories through the pipeline:**
-   - Move to `active/`
-   - TDD: write tests, implement, verify
-   - Move to `in-review/`
+**Wait.** Codex takes time. This is the holding pattern. Don't burn tokens while it runs.
 
-4. **Run review again**
+### Handle Feedback
 
-5. **Loop until review is clean** (no issues or only minor notes)
+**Logic Bug** (typo, null check, off-by-one, lint issue, simple oversight)
+→ Spawn a subagent to fix immediately
+→ Run Codex again
 
-### Final Steps
+**Functionality Issue** (missing feature, wrong behavior, architectural concern)
+→ Create a new story in `../backlog/`
+→ If the solution is ambiguous, **ask the user** before proceeding
+→ Run story through TDD pipeline
+→ Run Codex again
 
-6. **Human reviews** the full epic:
-   - Check all stories in `in-review/`
-   - Verify acceptance criteria met
-   - Test key flows manually if needed
+### The Loop
 
-7. **Human moves epic to done** (from domino root):
+```
+Codex review → issues found?
+  → Logic bug: subagent fix → Codex review
+  → Functionality: new story → TDD → Codex review
+  → No issues: proceed to human review
+```
+
+**Do not skip Codex. Do not exit early. Loop until Codex approves.**
+
+---
+
+## Human Review
+
+Once Codex is happy:
+
+1. Human reviews all stories in `in-review/`
+2. Human verifies acceptance criteria are met
+3. Human moves epic to done:
    ```bash
    mv active/{epic-name} done/
    ```
