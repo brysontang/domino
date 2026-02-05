@@ -7,38 +7,44 @@ This is the task vault. The file system is the instruction set.
 There is no orchestration daemon. No database. No custom scripts. Just `mv`, `find`, `grep`, and CLAUDE.md doing what it already does natively.
 
 Moving a folder IS the orchestration:
-- `mv planning/my-epic active/` → Epic is greenlit, agents can work
+- `mv epics/planning/my-epic epics/active/` → Epic is greenlit, agents can work
 - `mv backlog/story.md active/` → Story is claimed, work begins
 - `mv active/story.md in-review/` → Implementation done, awaiting review
-- `mv active/my-epic done/` → Epic shipped
+- `mv epics/active/my-epic epics/done/` → Epic shipped
 
 You walk into a folder and become the right agent for that context.
 
 ## Structure
-- `backlog/` — epics waiting to be planned
-- `planning/` — epics being specced (stories written, assumptions resolved)
-- `active/` — epics approved for execution. Agents work here.
-- `done/` — shipped epics. Historical reference only.
+```
+domino/
+├── phases/      # Canonical instructions (single source of truth)
+├── templates/   # Epic/story templates (use @ imports)
+└── epics/       # Your work lives here
+    ├── backlog/   — epics waiting to be planned
+    ├── planning/  — epics being specced
+    ├── active/    — epics approved for execution
+    └── done/      — shipped epics (historical reference)
+```
 
 ## Creating Work
 
 **New epic:**
 ```bash
-cp -r templates/epic backlog/my-epic-name
-# Edit backlog/my-epic-name/epic.md with vision
+cp -r templates/epic epics/backlog/my-epic-name
+# Edit epics/backlog/my-epic-name/epic.md with vision
 ```
 
 **New story:**
 ```bash
-cp templates/story.md planning/my-epic/backlog/01-story-name.md
+cp templates/story.md epics/planning/my-epic/backlog/01-story-name.md
 # Edit with acceptance criteria
 ```
 
 ## Navigation
 - Each epic is a folder containing `epic.md` and story subfolders
 - Stories live in: `backlog/`, `active/`, `in-review/`, `completed/`
-- Find active stories: `find active/ -path "*/active/*.md" ! -name "CLAUDE.md"`
-- Find by system: `grep -rl "systems:.*jwt" .`
+- Find active stories: `find epics/active/ -path "*/active/*.md" ! -name "CLAUDE.md"`
+- Find by system: `grep -rl "systems:.*jwt" epics/`
 
 ## Parallel Execution
 
@@ -62,8 +68,8 @@ When entering an active epic, check the dependency graph in `epic.md`. Stories w
 
 ## Rules
 - **When moving stories, never move CLAUDE.md** — move stories by name, not by glob
-- Never modify stories in `done/` epics
-- Never start work on an epic that isn't in `active/`
+- Never modify stories in `epics/done/`
+- Never start work on an epic that isn't in `epics/active/`
 - **If something is ambiguous, stop and escalate. Do not assume.**
 
 Assuming is how agents drift. If a story doesn't answer a question you need, STOP. Write the question under `## Blocked`. Report it. Wait for clarification.

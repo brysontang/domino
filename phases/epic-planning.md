@@ -48,7 +48,7 @@ Parallel groups:
 When stories are written and the graph is complete:
 - Report: "Epic [name] is ready for review"
 - Human reviews stories for completeness
-- Human greenlights: `mv planning/{epic} active/{epic}`
+- Human greenlights: `mv epics/planning/{epic} epics/active/{epic}`
 
 ## Rules
 - Do NOT implement code. Planning only.

@@ -20,10 +20,10 @@ When working on a new story, check if a completed epic touched similar systems:
 
 ```bash
 # Find epics that touched the auth system
-grep -rl "systems:.*auth" done/
+grep -rl "systems:.*auth" epics/done/
 
 # Read a completed story for patterns
-cat done/old-epic/completed/relevant-story.md
+cat epics/done/old-epic/completed/relevant-story.md
 ```
 
 The `systems:` tags in frontmatter help you find related work.
@@ -31,5 +31,5 @@ The `systems:` tags in frontmatter help you find related work.
 ## If Something Needs Fixing
 If you find a bug in shipped code:
 1. Do NOT edit the done epic
-2. Create a new epic in `backlog/` or `planning/`
-3. Reference the old epic: "Fixes issue from done/old-epic"
+2. Create a new epic in `epics/backlog/` or `epics/planning/`
+3. Reference the old epic: "Fixes issue from epics/done/old-epic"

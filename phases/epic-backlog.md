@@ -18,7 +18,7 @@ A parking lot for future work. Epics here have a rough vision but haven't been s
 ## Moving to Planning
 When the human greenlights an epic for planning:
 ```bash
-mv backlog/{epic-name} planning/
+mv epics/backlog/{epic-name} epics/planning/
 ```
 
-Then enter `planning/{epic-name}` and follow the planning CLAUDE.md.
+Then enter `epics/planning/{epic-name}` and follow the planning CLAUDE.md.

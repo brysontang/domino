@@ -1,7 +1,7 @@
 .DS_Store
 
-# Ignore epics (project-specific) but keep phase CLAUDE.md files
-backlog/*/
-planning/*/
-active/*/
-done/*/
+# Epics are project-specific, not part of domino framework
+epics/backlog/*/
+epics/planning/*/
+epics/active/*/
+epics/done/*/
