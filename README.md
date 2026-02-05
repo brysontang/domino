@@ -15,7 +15,7 @@
 Open Claude Code in your project and paste:
 
 ```
-Clone https://github.com/brysontang/domino.git then read domino/setup/CLAUDE.md and follow the instructions
+Clone https://github.com/brysontang/domino.git into this project, then read domino/setup/CLAUDE.md and follow the instructions
 ```
 
 ## How It Works
