@@ -1,1 +1,7 @@
 .DS_Store
+
+# Ignore epics (project-specific) but keep phase CLAUDE.md files
+backlog/*/
+planning/*/
+active/*/
+done/*/
