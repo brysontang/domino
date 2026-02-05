@@ -6,63 +6,108 @@ You are inside an epic. Read `epic.md` first — it contains:
 - Dependency graph: which stories can run in parallel
 - Context files: key codebase files this epic touches
 
-## Story Lifecycle
+## The Loop
+
+**This is a loop. Codex is the gatekeeper. You do not exit until Codex is happy.**
+
+```mermaid
+flowchart TD
+    A[Pick story from backlog] --> B[TDD: Write tests first]
+    B --> C[Implement until tests pass]
+    C --> D[Run Codex review]
+    D --> E{Codex happy?}
+    E -->|No - quick fix| F[Spawn subagent to fix]
+    E -->|No - ambiguous| G[Write question, ping user]
+    E -->|Yes| H[Move story to in-review]
+    F --> D
+    G --> D
+    H --> I{More stories?}
+    I -->|Yes| A
+    I -->|No| J[Run Codex on full epic]
+    J --> K{Codex happy?}
+    K -->|No| L[Create fix stories in backlog]
+    L --> A
+    K -->|Yes| M[Human review]
+    M --> N[Move epic to done]
 ```
-backlog/ → active/ → in-review/ → completed/
-   │          │           │            │
-   │          │           │            └─ Merged, reference only
-   │          │           └─ Tests pass, awaiting human review
-   │          └─ Being implemented (agent assigned)
-   └─ Defined but not started
+
+## TDD is Non-Negotiable
+
+Every story follows TDD:
+1. **Red** — Write tests that encode acceptance criteria. Run them. They fail.
+2. **Green** — Write code until tests pass. Nothing more.
+3. **Refactor** — Clean up while tests stay green.
+
+No implementation without failing tests first. Tests ARE the spec.
+
+## Story Flow
+
+### 1. Claim a Story
+```bash
+mv backlog/01-story.md active/
+```
+Update frontmatter: `agent: your-id`, `agent_status: implementing`
+
+### 2. TDD Loop
+- Write tests for acceptance criteria
+- Implement until green
+- Run Codex review
+
+### 3. Handle Codex Feedback
+
+**Quick fix** (typo, missing null check, style issue):
+→ Spawn a subagent to fix immediately
+→ Run Codex again
+
+**Ambiguous issue** (unclear requirement, architectural question):
+→ Write question under `## Blocked` in story
+→ Ping the user
+→ Wait for clarification
+→ Then continue
+
+### 4. Story Done
+When Codex is happy with the story:
+```bash
+mv active/01-story.md in-review/
 ```
 
-## Execution Model
+### 5. Next Story
+Go back to step 1. Pick next story from backlog.
 
-### Single Story
-1. Move story from `backlog/` to `active/`
-2. Update frontmatter: `agent: your-id`, `agent_status: implementing`
-3. Read story for acceptance criteria
-4. Check `completed/` for stories with overlapping `systems:` tags
-5. TDD: write tests → implement → move to `in-review/`
+## Parallel Execution
 
-### Parallel Execution (Multiple Stories)
-Read the dependency graph in `epic.md`. For independent stories:
-
-1. Identify stories with no blockers (usually the first group)
-2. Spawn one subagent per story
-3. Each subagent: claim story, implement, move to `in-review/`
-4. Wait for all subagents to complete
-5. Spawn next group of subagents
-6. Repeat until all stories are in `in-review/`
+Check dependency graph in `epic.md`. Independent stories can run in parallel:
 
 ```
-# Example from epic.md dependency graph:
-# 01, 02, 03 can run parallel (no deps)
-# 04, 05 can run parallel (after group 1)
-# 06 runs last (after all)
-
-# Spawn: agent-01, agent-02, agent-03
-# Wait for completion
-# Spawn: agent-04, agent-05
-# Wait for completion
-# Spawn: agent-06
+# Stories 01, 02, 03 have no dependencies
+# Spawn 3 subagents, one per story
+# Each subagent runs the full TDD + Codex loop
+# Wait for all to reach in-review
+# Then spawn next wave
 ```
+
+## Epic Completion
+
+When all stories are in `in-review/`:
+
+1. **Run Codex on full epic** (diff against main)
+2. **If Codex finds issues:**
+   - Create fix stories in `backlog/`
+   - Run them through the loop
+   - Back to step 1
+3. **If Codex is happy:**
+   - Human reviews all stories
+   - Human moves epic to `done/`
+
+**Do not skip Codex. Do not exit early. The loop continues until Codex approves.**
 
 ## Escalation
 
-**If a story doesn't answer something you need to implement: STOP.**
+If a story doesn't answer something you need: **STOP.**
 
-1. Write the question under `## Blocked` in the story file
-2. Update frontmatter: `agent_status: blocked`
-3. Report: "Story [name] blocked. Question: [question]"
-4. Do NOT proceed. Do NOT assume.
+1. Write question under `## Blocked`
+2. Update `agent_status: blocked`
+3. Report to user
+4. Do NOT assume. Do NOT proceed.
 
-Assuming is how agents drift. A blocked story waiting for clarification is better than a "completed" story that built the wrong thing.
-
-## Epic Completion
-When all stories reach `in-review/` or `completed/`:
-
-1. Run automated review (Codex if available, otherwise spawn a review subagent)
-2. Fix any issues (create fix stories, run through pipeline)
-3. Human reviews all `in-review/` stories
-4. Human moves epic to `done/` (from domino root): `mv active/{epic} done/`
+Assuming is how agents drift.
