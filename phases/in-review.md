@@ -1,57 +1,33 @@
-# In Review
+# In Review (Story)
 
-Stories here have passing tests and are awaiting review.
+Stories here have passing tests. Do not modify unless fixing Codex issues.
 
-Do not modify stories here unless fixing issues from Codex.
-
----
+```mermaid
+flowchart TD
+    Check{All stories in in-review?}
+    Check -->|No| Wait[Wait for other stories]
+    Check -->|Yes| Codex[Run: codex review --uncommitted]
+    Codex --> Result{Result?}
+    Result -->|Logic bug| Fix[Fix immediately] --> Codex
+    Result -->|Functionality| Story[New story in backlog/] --> TDD[TDD pipeline] --> Codex
+    Result -->|Clean| Done[mv epic to done/]
+```
 
 ## The Codex Gate
 
-**When ALL stories in the epic are in `in-review/`, run Codex.**
-
-This is the gate. The epic does not proceed until Codex is happy.
-
-### Run Codex
+**MANDATORY. Do NOT skip this step. Do NOT move to done without running Codex.**
 
 ```bash
-codex review  # Reviews full branch diff against main
+codex review --uncommitted
 ```
 
-**Wait.** Codex takes time. This is the holding pattern. Don't burn tokens while it runs.
+This is the `codex` CLI tool, NOT a subagent. Wait for it to complete.
 
-### Handle Feedback
+Codex clean = move to done. No human review needed.
 
-**Logic Bug** (typo, null check, off-by-one, lint issue, simple oversight)
-→ Spawn a subagent to fix immediately
-→ Run Codex again
-
-**Functionality Issue** (missing feature, wrong behavior, architectural concern)
-→ Create a new story in `../backlog/`
-→ If the solution is ambiguous, **ask the user** before proceeding
-→ Run story through TDD pipeline
-→ Run Codex again
-
-### The Loop
-
-```
-Codex review → issues found?
-  → Logic bug: subagent fix → Codex review
-  → Functionality: new story → TDD → Codex review
-  → No issues: proceed to human review
-```
-
-**Do not skip Codex. Do not exit early. Loop until Codex approves.**
-
----
-
-## Human Review
-
-Once Codex is happy:
-
-1. Human reviews all stories in `in-review/`
-2. Human verifies acceptance criteria are met
-3. Human moves epic to done:
-   ```bash
-   mv active/{epic-name} done/
-   ```
+## Rules
+- **Do NOT move to done until Codex is clean**
+- Logic bugs: fix immediately, re-run `codex review --uncommitted`
+- Functionality issues: create story, ask user if ambiguous, TDD, re-run Codex
+- Loop until Codex has no issues
+- **Codex is the final gate. When Codex is clean, move to done immediately.**
