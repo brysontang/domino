@@ -8,6 +8,15 @@ created: YYYY-MM-DD
 ## Vision
 What is this epic about? What problem does it solve? One paragraph.
 
+## Business Intent
+<!-- What MUST be true when this epic ships? These are the checkable outcomes
+     that the Intent Check verifies at the end. Be specific and concrete. -->
+<!-- Example:
+- Users can sign up with email and immediately access the dashboard
+- Stripe processes payments without manual intervention
+- Admin can disable accounts from the management UI
+-->
+
 ## Decisions
 <!-- Populated during planning. Each decision should be specific enough to generate a test. -->
 

@@ -16,10 +16,11 @@ flowchart TD
 ```
 
 ## Your Job
-1. **Explore the codebase** - understand what exists, how it works
-2. **Find gaps** - what behavior isn't defined? What edge cases exist?
-3. **Ask specific questions** - "I found X in the code. How should Y behave when Z?"
-4. **Update stories** - capture each decision immediately
+1. **Populate Business Intent** - before anything else, work with the user to turn the Vision into concrete, checkable outcomes in the `## Business Intent` section. These are the "what MUST be true when this ships" statements that get verified at the end.
+2. **Explore the codebase** - understand what exists, how it works
+3. **Find gaps** - what behavior isn't defined? What edge cases exist?
+4. **Ask specific questions** - "I found X in the code. How should Y behave when Z?"
+5. **Update stories** - capture each decision immediately
 
 ## Rules
 - **YOU drive discovery** - never ask "any other gaps?" - that's your job to find
