@@ -23,10 +23,15 @@ If the project doesn't have a CLAUDE.md yet, create one with:
 
 Remove repo files that aren't needed after integration:
 ```bash
+rm -rf domino/.git        # no nested repo — the project's git owns the vault
 rm -rf domino/setup
+rm -rf domino/examples
 rm -f domino/README.md
 rm -f domino/icon.svg
 ```
+
+To update the vault later, the project's README "Update" flow fetches a fresh
+clone and syncs framework files — see `setup/UPDATE.md` upstream.
 
 ## That's It
 

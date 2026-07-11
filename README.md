@@ -18,6 +18,16 @@ Open Claude Code in your project and paste:
 Clone https://github.com/brysontang/domino.git into this project, then read domino/setup/CLAUDE.md and follow the instructions
 ```
 
+## Update
+
+Already have Domino in a project? Open Claude Code in that project and paste:
+
+```
+Clone https://github.com/brysontang/domino.git into /tmp/domino-latest, then read /tmp/domino-latest/setup/UPDATE.md and follow the instructions
+```
+
+Your epics and dashes are never touched — only framework files (`phases/`, `templates/`, `CLAUDE.md`) get updated, and local customizations are preserved.
+
 ## How It Works
 
 1. **Create an epic** — "Create an epic for user authentication"
