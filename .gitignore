@@ -5,3 +5,6 @@ epics/backlog/*/
 epics/planning/*/
 epics/active/*/
 epics/done/*/
+
+# Workflow dogfooding sandbox — disposable target repo, not part of the framework
+examples/
