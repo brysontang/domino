@@ -1,5 +1,6 @@
 ---
 systems: []           # Keep single-line for grep: systems: [auth, api]
+contracts: []         # Dash only — contracts this story implements or consumes
 created: YYYY-MM-DD
 agent:                # Set when agent claims story
 agent_status:         # implementing | blocked

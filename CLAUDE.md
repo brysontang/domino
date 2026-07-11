@@ -18,13 +18,22 @@ You walk into a folder and become the right agent for that context.
 ```
 domino/
 ├── phases/      # Canonical instructions (single source of truth)
-├── templates/   # Epic/story templates (use @ imports)
-└── epics/       # Your work lives here
-    ├── backlog/   — epics waiting to be planned
-    ├── planning/  — epics being specced
-    ├── active/    — epics approved for execution
-    └── done/      — shipped epics (historical reference)
+├── templates/   # Dash/epic/story/contract templates (use @ imports)
+├── epics/       # Single epics
+│   ├── backlog/   — epics waiting to be planned
+│   ├── planning/  — epics being specced
+│   ├── active/    — epics approved for execution
+│   └── done/      — shipped epics (historical reference)
+└── dashes/      # Multi-epic pushes (shorter than a sprint)
+    ├── backlog/   — dashes waiting to be planned
+    ├── planning/  — epics specced in isolation, then woven into one graph
+    ├── active/    — dashes approved for execution
+    └── done/      — shipped dashes
 ```
+
+A dash is a folder of epics shipped together, plus `contracts/` — frozen
+interface docs that let the epics run in parallel. Cross-epic dependencies are
+story-level edges in `dash.md`; every edge must cite a contract.
 
 ## Creating Work
 
@@ -40,11 +49,18 @@ cp templates/story.md epics/planning/my-epic/backlog/01-story-name.md
 # Edit with acceptance criteria
 ```
 
+**New dash:**
+```bash
+cp -r templates/dash dashes/backlog/my-dash-name
+# Edit dash.md with vision — epics get split out during planning
+```
+
 ## Navigation
 - Each epic is a folder containing `epic.md` and story subfolders
 - Stories live in: `backlog/`, `active/`, `in-review/`, `completed/`
 - Find active stories: `find epics/active/ -path "*/active/*.md" ! -name "CLAUDE.md"`
-- Find by system: `grep -rl "systems:.*jwt" epics/`
+- Find by system: `grep -rl "systems:.*jwt" epics/ dashes/`
+- Find a contract's consumers: `grep -rl "contracts:.*jwt-claims" dashes/`
 
 ## Parallel Execution
 
@@ -56,6 +72,10 @@ When entering an active epic, check the dependency graph in `epic.md`. Stories w
 # Wait for all to reach in-review
 # Then spawn subagents for the next dependency group
 ```
+
+Inside an active dash there are no waves at all — one story-level DAG spans
+every epic and stories launch the moment their dependencies complete. See
+`phases/dash-workspace.md`.
 
 ## Autonomy
 
